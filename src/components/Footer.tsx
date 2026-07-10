@@ -64,6 +64,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
       onContextMenu={(e) => { e.preventDefault(); cancelHold(); }}
       className={`relative group overflow-hidden cursor-pointer ${className}`}
       style={{ ...style, WebkitTouchCallout: 'none', userSelect: 'none', touchAction: 'none' }}
+      data-interactive="true"
     >
       <div 
         className={`absolute inset-0 origin-left ${fillClassName} z-0`}
@@ -220,7 +221,7 @@ export default function Footer() {
           cursorRef.current.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0) rotate(-12deg)`;
           
           const target = e.target as HTMLElement;
-          const isInteractive = target.closest('a, button');
+          const isInteractive = target.closest('a, button, [data-interactive="true"]');
           cursorRef.current.style.opacity = isInteractive ? "0" : "1";
         }}
         onMouseEnter={() => {
@@ -247,7 +248,7 @@ export default function Footer() {
         {/* ─── CUSTOM "CLIC" CURSOR ─── */}
         <div 
           ref={cursorRef}
-          className="pointer-events-none absolute z-50 w-20 h-20 border-[2px] rounded-full hidden md:flex items-center justify-center opacity-0 transition-[opacity,transform] duration-[300ms,75ms] ease-out"
+          className="pointer-events-none absolute z-50 w-20 h-20 border-[2px] rounded-full flex items-center justify-center opacity-0 transition-[opacity,transform] duration-[300ms,75ms] ease-out"
           style={{ 
             borderColor: C.deepNavy, 
             color: C.deepNavy,
@@ -285,7 +286,7 @@ export default function Footer() {
         ))}
 
         {/* Top Spacer (Stamp Area) */}
-        <div className="w-full h-[120px] md:h-[160px]">
+        <div className="w-full h-[250px] md:h-[160px]">
         </div>
 
         {/* ─── GRID LINKS SECTION ─── */}
