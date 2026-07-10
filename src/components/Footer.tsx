@@ -286,7 +286,7 @@ export default function Footer() {
         ))}
 
         {/* Top Spacer (Stamp Area) */}
-        <div className="w-full h-[250px] md:h-[160px]">
+        <div className="w-full h-[350px] md:h-[200px]">
         </div>
 
         {/* ─── GRID LINKS SECTION ─── */}
@@ -296,7 +296,7 @@ export default function Footer() {
             {/* Left Column: Contáctanos (WhatsApp) */}
             <HoldButton 
               href="https://wa.me/584247222220"
-              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center bg-[#081C46]/5 min-h-[80px]"
+              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center bg-[#081C46]/5 h-[65px] md:h-auto"
               style={{ borderColor: C.deepNavy }}
               fillClassName="bg-[#25D366]/85 backdrop-blur-md"
               labelNode={<h4 className="font-serif font-black italic text-xl md:text-2xl text-center leading-tight uppercase">WHATSAPP</h4>}
@@ -396,7 +396,7 @@ export default function Footer() {
       </div>
 
       {/* ─── STANDARD LEGAL BOTTOM BAR ─── */}
-      <div className="w-[95%] max-w-[1300px] flex flex-col sm:flex-row justify-start items-center sm:items-start py-4 mt-2 text-[#F7F2E8]/60 font-sans text-[10px] tracking-wider uppercase gap-4 pb-28 md:pb-6 text-center sm:text-left">
+      <div className="w-[95%] max-w-[1300px] flex flex-col sm:flex-row justify-start items-center sm:items-start py-4 mt-2 text-[#F7F2E8]/60 font-sans text-[10px] tracking-wider uppercase gap-4 pb-4 md:pb-4 text-center sm:text-left">
         <div className="mb-2 sm:mb-0">
           © {new Date().getFullYear()} El Caserito. Todos los derechos reservados.
         </div>
