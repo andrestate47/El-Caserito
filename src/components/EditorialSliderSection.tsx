@@ -111,14 +111,14 @@ export default function EditorialSliderSection() {
     const updateRange = () => {
       const w = window.innerWidth;
       if (w < 768) {
-        // Mobile: 5 cards of 90vw each
-        setScrollRange("-410vw");
+        // Mobile: 7 cards of 90vw each
+        setScrollRange("-600vw");
       } else if (w < 1024) {
-        // Tablet: 5 cards of 70vw each
-        setScrollRange("-310vw");
+        // Tablet: 7 cards of 70vw each
+        setScrollRange("-460vw");
       } else {
-        // Desktop: 5 cards of 60vw each
-        setScrollRange("-250vw");
+        // Desktop: 7 cards of 60vw each
+        setScrollRange("-380vw");
       }
     };
     updateRange();
@@ -136,6 +136,8 @@ export default function EditorialSliderSection() {
     { id: 3, img: "/platos-caserito/parrilla.webp", title: "Parrillas", rot: -2, yOffset: "translate-y-5 md:translate-y-12", isSeal: false },
     { id: 4, img: "/platos-caserito/Casuela de marisco.webp", title: "Cazuela de Marisco", rot: 5, yOffset: "-translate-y-4 md:-translate-y-8", isSeal: false },
     { id: 5, img: "/platos-caserito/coctel_mojito_premium.png", title: "Cócteles", rot: -4, yOffset: "translate-y-3 md:translate-y-6", isSeal: false },
+    { id: 6, img: "/platos-caserito/paella.webp", title: "Paella", rot: 2, yOffset: "-translate-y-2 md:-translate-y-5", isSeal: false },
+    { id: 7, img: "/platos-caserito/ensalada cesar.webp", title: "Ensalada César", rot: -5, yOffset: "translate-y-6 md:translate-y-10", isSeal: true },
   ];
 
   return (
