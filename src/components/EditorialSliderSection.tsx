@@ -175,9 +175,9 @@ export default function EditorialSliderSection() {
       </div>
 
       {/* Horizontal Slider Section (Sticky) */}
-      <div ref={containerRef} className="relative w-full h-[500vh]">
-        {/* Sticky Container holds the view while scrolling the 500vh height */}
-        <div className="sticky top-0 flex flex-col h-screen overflow-hidden justify-center">
+      <div ref={containerRef} className="relative w-full h-[500dvh]">
+        {/* Sticky Container holds the view while scrolling the 500dvh height */}
+        <div className="sticky top-0 flex flex-col h-[100dvh] overflow-hidden justify-center">
           
           {/* Horizontal Scrolling Slider Track */}
           <div className="w-full relative flex items-center overflow-hidden">

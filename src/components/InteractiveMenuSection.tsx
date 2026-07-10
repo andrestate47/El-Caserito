@@ -73,7 +73,7 @@ export default function InteractiveMenuSection() {
 
   return (
     <>
-      <section id="menu-section" ref={sectionRef} className="relative w-full h-[100vh] lg:h-[110vh] overflow-x-clip flex items-center z-20">
+      <section id="menu-section" ref={sectionRef} className="relative w-full h-[100dvh] lg:h-[110dvh] overflow-x-clip flex items-center z-20">
       
       {/* ── Background Image & Dark Overlay ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
