@@ -12,8 +12,7 @@ interface MenuCategoryClientProps {
 export default function MenuCategoryClient({ subcategories }: MenuCategoryClientProps) {
   const [hoveredItem, setHoveredItem] = useState<{ image: string; name: string } | null>(null);
 
-  // Mouse position state
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // Smooth springs for the floating image position
 
   // Smooth springs for the floating image position
   const springX = useSpring(0, { stiffness: 100, damping: 20 });
@@ -21,7 +20,6 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
       springX.set(e.clientX);
       springY.set(e.clientY);
     };
@@ -125,7 +123,8 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
               marginTop: "-190px",
               x: springX,
               y: springY,
-              backgroundColor: "#FFFFFF"
+              backgroundColor: "#FFFFFF",
+              willChange: "transform"
             }}
           >
             <div className="relative w-full h-full overflow-hidden border" style={{ borderColor: "rgba(20, 26, 45, 0.1)" }}>

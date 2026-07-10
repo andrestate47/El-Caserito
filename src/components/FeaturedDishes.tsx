@@ -90,6 +90,7 @@ export default function FeaturedDishes() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8 }}
+                  style={{ willChange: "transform, opacity" }}
                 >
                   <Image
                     src={item.image}
@@ -110,6 +111,7 @@ export default function FeaturedDishes() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8, delay: 0.1 }}
+                  style={{ willChange: "transform, opacity" }}
                 >
                   <span className="text-brand-gold text-xs md:text-sm font-semibold tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full self-start">
                     {item.tag}
