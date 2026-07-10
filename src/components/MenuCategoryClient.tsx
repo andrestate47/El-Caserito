@@ -125,10 +125,10 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
               marginTop: "-190px",
               x: springX,
               y: springY,
-              backgroundColor: "#141A2D"
+              backgroundColor: "#FFFFFF"
             }}
           >
-            <div className="relative w-full h-full overflow-hidden border" style={{ borderColor: "rgba(255, 247, 234, 0.1)" }}>
+            <div className="relative w-full h-full overflow-hidden border" style={{ borderColor: "rgba(20, 26, 45, 0.1)" }}>
               <Image 
                 src={hoveredItem.image} 
                 alt={hoveredItem.name} 
@@ -139,7 +139,7 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
             </div>
             {/* Pequeño texto decorativo de polaroid */}
             <div className="absolute bottom-3 left-0 w-full text-center px-3">
-              <span className="font-serif italic text-sm md:text-base leading-tight block truncate" style={{ color: "#FFF7EA" }}>
+              <span className="font-serif italic text-sm md:text-base leading-tight block truncate" style={{ color: "#141A2D" }}>
                 {hoveredItem.name}
               </span>
             </div>
