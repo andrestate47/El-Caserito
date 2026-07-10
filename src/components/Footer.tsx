@@ -33,15 +33,19 @@ interface HoldButtonProps {
 const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillClassName, labelNode, logoNode }) => {
   const [state, setState] = useState<'idle' | 'holding' | 'success'>('idle');
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    setIsDesktop(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
 
   const startHold = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isDesktop) return; // Desktop is handled by simple hover and click
     if (e.type === 'mousedown' && (e as React.MouseEvent).button !== 0) return;
     setState('holding');
     timerRef.current = setTimeout(() => {
       setState('success');
       setTimeout(() => {
-        // En móviles, window.open dentro de un setTimeout es bloqueado silenciosamente 
-        // por el bloqueador de popups. Usar location.href garantiza la redirección a la app.
         window.location.href = href;
         setState('idle');
       }, 1000);
@@ -49,14 +53,22 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
   };
 
   const cancelHold = () => {
+    if (isDesktop) return;
     if (timerRef.current) clearTimeout(timerRef.current);
     if (state !== 'success') {
       setState('idle');
     }
   };
 
+  const handleClick = () => {
+    if (isDesktop) {
+      window.location.href = href;
+    }
+  };
+
   return (
     <div
+      onClick={handleClick}
       onMouseDown={startHold}
       onMouseUp={cancelHold}
       onMouseLeave={cancelHold}
@@ -69,11 +81,11 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
       data-interactive="true"
     >
       <div 
-        className={`absolute inset-0 origin-left ${fillClassName} z-0`}
-        style={{
+        className={`absolute inset-0 origin-left ${fillClassName} z-0 ${isDesktop ? 'scale-x-0 group-hover:scale-x-100 transition-transform duration-300' : ''}`}
+        style={!isDesktop ? {
           transform: state === 'holding' || state === 'success' ? 'scaleX(1)' : 'scaleX(0)',
           transition: state === 'holding' ? 'transform 2000ms linear' : 'transform 400ms ease-out'
-        }}
+        } : undefined}
       />
       
       <div className="relative z-10 w-full h-full flex items-center justify-center p-4">
@@ -83,10 +95,10 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
           </span>
         ) : (
           <>
-            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-0 group-hover:scale-90 group-hover:translate-y-2 ${state === 'holding' ? 'opacity-0 scale-90 translate-y-2' : 'opacity-100 scale-100 translate-y-0'}`}>
+            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-0 group-hover:scale-90 group-hover:translate-y-2 ${!isDesktop && state === 'holding' ? 'opacity-0 scale-90 translate-y-2' : 'opacity-100 scale-100 translate-y-0'}`}>
               {labelNode}
             </div>
-            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 text-white drop-shadow-md delay-100 ${state === 'holding' ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 -translate-y-2'}`}>
+            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 text-white drop-shadow-md delay-100 ${!isDesktop && state === 'holding' ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 -translate-y-2'}`}>
               {logoNode}
             </div>
           </>
