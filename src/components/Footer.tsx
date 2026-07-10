@@ -150,12 +150,12 @@ export default function Footer() {
           mix-blend-mode: multiply; /* Efecto de tinta real sobre papel */
           font-family: var(--font-serif), serif;
           font-weight: 900;
-          font-size: 0.8rem;
+          font-size: 1.3rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          border: 1.5px solid #D4AF37;
+          border: 2px solid #D4AF37;
           border-radius: 4px;
-          padding: 0.25rem 1rem;
+          padding: 0.35rem 1.4rem;
           white-space: nowrap;
           z-index: 40;
         }

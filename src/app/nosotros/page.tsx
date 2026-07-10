@@ -22,7 +22,7 @@ export default function NosotrosPage() {
   };
 
   return (
-    <main className="relative min-h-[100dvh] selection:bg-[#D4AF37] selection:text-[#0A183C]">
+    <main className="relative min-h-[100svh] selection:bg-[#D4AF37] selection:text-[#0A183C]">
       
       {/* Fixed Parallax Background Image & Hero Content */}
       <div className="fixed inset-0 z-0 flex flex-col items-center justify-center">
@@ -63,10 +63,10 @@ export default function NosotrosPage() {
       <div className="relative z-10">
 
         {/* Transparent Spacer to allow scrolling past the fixed hero */}
-        <div className="relative w-full h-[100dvh] pointer-events-none" />
+        <div className="relative w-full h-[100svh] pointer-events-none" />
 
         {/* Story Content Section (Transparent floating over hero) */}
-        <section className="relative py-24 md:py-48 px-4 md:px-6 flex justify-center min-h-[120dvh]">
+        <section className="relative py-24 md:py-48 px-4 md:px-6 flex justify-center min-h-[120svh]">
           <div className="max-w-3xl w-full">
             <motion.div
               initial={{ opacity: 0, y: 60 }}
