@@ -189,17 +189,7 @@ export default function EnvelopeIntro() {
       .to(topFlapWrapperRef.current, {
         rotateX: 180, 
         duration: 2.5, // Ultra suave
-        ease: "power2.inOut",
-        onUpdate: function() {
-          const progress = this.progress();
-          const yOffset = 5 + (progress * 150); 
-          const blur = 15 + (progress * 100);
-          const opacity = 0.5 - (progress * 0.4); 
-          
-          if (topFlapWrapperRef.current) {
-            topFlapWrapperRef.current.style.filter = `drop-shadow(0px ${yOffset}px ${blur}px rgba(0,0,0,${Math.max(opacity, 0)}))`;
-          }
-        }
+        ease: "power2.inOut"
       }, "+=0.1")
       // A la par que se abre la solapa, desvanecemos el fondo negro para ir mostrando el Hero
       .to(containerRef.current, {
@@ -274,18 +264,11 @@ export default function EnvelopeIntro() {
       {/* 2px de desbordamiento en cada borde para ocultar cualquier línea de corte y que cubra toda la pantalla */}
       <div 
         ref={envelopeBodyRef}
-        className="absolute w-[calc(100%+4px)] h-[calc(100dvh+4px)] -left-[2px] -top-[2px] pointer-events-auto transition-transform" 
-        style={{ perspective: "1800px" }}
+        className="absolute w-[calc(100%+4px)] h-[calc(100svh+4px)] -left-[2px] -top-[2px] pointer-events-auto transition-transform" 
+        style={{ perspective: "1800px", willChange: "transform, opacity" }}
       >
         
-        {/* SVG Filter for Paper Noise Texture */}
-        <svg className="hidden">
-          <filter id="paperNoise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" result="noise" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.08 0" in="noise" result="coloredNoise" />
-            <feBlend in="SourceGraphic" in2="coloredNoise" mode="multiply" />
-          </filter>
-        </svg>
+        {/* Removed expensive SVG paper noise filter for mobile GPU performance */}
 
         {/* NOTA: El sobre es hueco para que se vea el Hero al abrirse */}
         
@@ -296,8 +279,9 @@ export default function EnvelopeIntro() {
           style={{
             backgroundColor: C.paperSide,
             clipPath: "polygon(0% 0%, 100% 50%, 0% 100%)",
-            filter: "drop-shadow(6px 0px 15px rgba(0,0,0,0.35)) drop-shadow(2px 0px 5px rgba(0,0,0,0.2)) url(#paperNoise)",
-            transformOrigin: "left"
+            filter: "drop-shadow(6px 0px 15px rgba(0,0,0,0.35)) drop-shadow(2px 0px 5px rgba(0,0,0,0.2))",
+            transformOrigin: "left",
+            willChange: "transform"
           }}
         />
         
@@ -308,8 +292,9 @@ export default function EnvelopeIntro() {
           style={{
             backgroundColor: C.paperSide,
             clipPath: "polygon(100% 0%, 0% 50%, 100% 100%)",
-            filter: "drop-shadow(-6px 0px 15px rgba(0,0,0,0.35)) drop-shadow(-2px 0px 5px rgba(0,0,0,0.2)) url(#paperNoise)",
-            transformOrigin: "right"
+            filter: "drop-shadow(-6px 0px 15px rgba(0,0,0,0.35)) drop-shadow(-2px 0px 5px rgba(0,0,0,0.2))",
+            transformOrigin: "right",
+            willChange: "transform"
           }}
         />
 
@@ -320,20 +305,22 @@ export default function EnvelopeIntro() {
           style={{
             backgroundColor: C.paperLight,
             clipPath: "polygon(0% 100%, 50% 0%, 100% 100%)",
-            filter: "drop-shadow(0px -4px 12px rgba(0,0,0,0.4)) drop-shadow(0px -1px 3px rgba(0,0,0,0.3)) url(#paperNoise)",
-            transformOrigin: "bottom"
+            filter: "drop-shadow(0px -4px 12px rgba(0,0,0,0.4)) drop-shadow(0px -1px 3px rgba(0,0,0,0.3))",
+            transformOrigin: "bottom",
+            willChange: "transform"
           }}
         />
 
         {/* 4. Solapa Superior (Animada) */}
         <div 
           ref={topFlapWrapperRef}
-          className="absolute inset-0 w-full h-[100dvh] pointer-events-none z-30"
+          className="absolute inset-0 w-full h-[100svh] pointer-events-none z-30"
           style={{ 
             // Crisper shadow to match the reference image lighting
             filter: "drop-shadow(0px 8px 20px rgba(0,0,0,0.5)) drop-shadow(0px 3px 6px rgba(0,0,0,0.3))", 
             perspective: "1800px",
-            transformOrigin: "top"
+            transformOrigin: "top",
+            willChange: "transform"
           }}
         >
           {/* Geometría de la solapa superior */}
@@ -341,8 +328,7 @@ export default function EnvelopeIntro() {
             className="absolute top-0 left-0 w-full h-[51%]"
             style={{
               backgroundColor: C.paperLight,
-              clipPath: "polygon(0% 0%, 100% 0%, 50% 100%)",
-              filter: "url(#paperNoise)"
+              clipPath: "polygon(0% 0%, 100% 0%, 50% 100%)"
             }}
           >
              {/* Highlight en los bordes diagonales */}
