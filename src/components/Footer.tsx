@@ -81,7 +81,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
       data-interactive="true"
     >
       <div 
-        className={`absolute inset-0 origin-left ${fillClassName} z-0 ${isDesktop ? 'scale-x-0 group-hover:scale-x-100 transition-transform duration-300' : ''}`}
+        className={`absolute inset-0 origin-left ${fillClassName} z-0 ${isDesktop ? 'scale-x-0 group-hover:scale-x-100 transition-transform duration-[600ms] ease-out' : ''}`}
         style={!isDesktop ? {
           transform: state === 'holding' || state === 'success' ? 'scaleX(1)' : 'scaleX(0)',
           transition: state === 'holding' ? 'transform 2000ms linear' : 'transform 400ms ease-out'
