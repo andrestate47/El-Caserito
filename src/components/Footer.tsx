@@ -21,6 +21,78 @@ interface Stamp {
   text: string;
 }
 
+interface HoldButtonProps {
+  href: string;
+  className: string;
+  style?: React.CSSProperties;
+  fillClassName: string;
+  labelNode: React.ReactNode;
+  logoNode: React.ReactNode;
+}
+
+const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillClassName, labelNode, logoNode }) => {
+  const [state, setState] = useState<'idle' | 'holding' | 'success'>('idle');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startHold = (e: React.MouseEvent | React.TouchEvent) => {
+    if (e.type === 'mousedown' && (e as React.MouseEvent).button !== 0) return;
+    setState('holding');
+    timerRef.current = setTimeout(() => {
+      setState('success');
+      setTimeout(() => {
+        window.open(href, '_blank');
+        setState('idle');
+      }, 1000);
+    }, 2000);
+  };
+
+  const cancelHold = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (state !== 'success') {
+      setState('idle');
+    }
+  };
+
+  return (
+    <div
+      onMouseDown={startHold}
+      onMouseUp={cancelHold}
+      onMouseLeave={cancelHold}
+      onTouchStart={startHold}
+      onTouchEnd={cancelHold}
+      onTouchCancel={cancelHold}
+      onContextMenu={(e) => { e.preventDefault(); cancelHold(); }}
+      className={`relative group overflow-hidden cursor-pointer ${className}`}
+      style={{ ...style, WebkitTouchCallout: 'none', userSelect: 'none' }}
+    >
+      <div 
+        className={`absolute inset-0 origin-left ${fillClassName} z-0`}
+        style={{
+          transform: state === 'holding' || state === 'success' ? 'scaleX(1)' : 'scaleX(0)',
+          transition: state === 'holding' ? 'transform 2000ms linear' : 'transform 400ms ease-out'
+        }}
+      />
+      
+      <div className="relative z-10 w-full h-full flex items-center justify-center p-4">
+        {state === 'success' ? (
+          <span className="font-serif italic font-black text-2xl md:text-3xl text-white drop-shadow-md animate-pulse">
+            OK
+          </span>
+        ) : (
+          <>
+            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-0 group-hover:scale-90 group-hover:translate-y-2 ${state === 'holding' ? 'opacity-0 scale-90 translate-y-2' : 'opacity-100 scale-100 translate-y-0'}`}>
+              {labelNode}
+            </div>
+            <div className={`absolute flex items-center justify-center transition-all duration-[600ms] ease-in-out group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 text-white drop-shadow-md delay-100 ${state === 'holding' ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 -translate-y-2'}`}>
+              {logoNode}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function Footer() {
   const [stamps, setStamps] = useState<Stamp[]>([]);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -221,58 +293,35 @@ export default function Footer() {
           
           <div className="flex flex-col md:flex-row w-full">
             {/* Left Column: Contáctanos (WhatsApp) */}
-            <a 
+            <HoldButton 
               href="https://wa.me/584247222220"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center p-6 bg-[#081C46]/5 relative group overflow-hidden min-h-[120px]" 
+              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center bg-[#081C46]/5 min-h-[120px]"
               style={{ borderColor: C.deepNavy }}
-            >
-              {/* WhatsApp Green Fill Animation (Glassmorphism & Slower) */}
-              <div className="absolute inset-0 bg-[#25D366]/85 backdrop-blur-md origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[800ms] ease-in-out z-0" />
-              
-              <div className="relative z-10 w-full h-full flex items-center justify-center">
-                {/* Text */}
-                <h4 className="absolute font-serif font-black italic text-xl md:text-2xl text-center leading-tight uppercase transition-all duration-[600ms] ease-in-out group-hover:opacity-0 group-hover:scale-90 group-hover:translate-y-2 opacity-100 translate-y-0 scale-100">
-                  WHATSAPP
-                </h4>
-                
-                {/* Logo */}
-                <div className="absolute transition-all duration-[600ms] ease-in-out opacity-0 scale-50 -translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 text-white drop-shadow-md delay-100">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12.031 2c-5.513 0-9.988 4.474-9.988 9.988 0 1.944.509 3.844 1.478 5.518L2 22l4.63-1.215a9.96 9.96 0 0 0 5.401 1.577c5.514 0 9.988-4.475 9.988-9.988S17.545 2 12.031 2zm5.72 14.331c-.244.686-1.42 1.309-1.95 1.385-.505.071-1.157.142-3.414-.793-2.714-1.124-4.442-3.876-4.577-4.057-.134-.181-1.092-1.45-1.092-2.766 0-1.315.684-1.961.927-2.227.243-.265.529-.331.706-.331.176 0 .353.001.507.008.163.007.382-.061.597.458.221.536.75 1.83.816 1.962.066.132.11.287.022.463-.088.177-.132.287-.265.441-.132.155-.276.331-.397.441-.132.121-.27.254-.122.507.149.254.662 1.092 1.424 1.77 1.011.899 1.821 1.18 2.074 1.301.254.121.403.105.551-.061.149-.166.64-.75.811-1.009.171-.259.342-.215.574-.132.232.083 1.467.695 1.72.827.254.132.425.199.486.309.061.111.061.64-.183 1.326z"/>
-                  </svg>
-                </div>
-              </div>
-            </a>
+              fillClassName="bg-[#25D366]/85 backdrop-blur-md"
+              labelNode={<h4 className="font-serif font-black italic text-xl md:text-2xl text-center leading-tight uppercase">WHATSAPP</h4>}
+              logoNode={
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.031 2c-5.513 0-9.988 4.474-9.988 9.988 0 1.944.509 3.844 1.478 5.518L2 22l4.63-1.215a9.96 9.96 0 0 0 5.401 1.577c5.514 0 9.988-4.475 9.988-9.988S17.545 2 12.031 2zm5.72 14.331c-.244.686-1.42 1.309-1.95 1.385-.505.071-1.157.142-3.414-.793-2.714-1.124-4.442-3.876-4.577-4.057-.134-.181-1.092-1.45-1.092-2.766 0-1.315.684-1.961.927-2.227.243-.265.529-.331.706-.331.176 0 .353.001.507.008.163.007.382-.061.597.458.221.536.75 1.83.816 1.962.066.132.11.287.022.463-.088.177-.132.287-.265.441-.132.155-.276.331-.397.441-.132.121-.27.254-.122.507.149.254.662 1.092 1.424 1.77 1.011.899 1.821 1.18 2.074 1.301.254.121.403.105.551-.061.149-.166.64-.75.811-1.009.171-.259.342-.215.574-.132.232.083 1.467.695 1.72.827.254.132.425.199.486.309.061.111.061.64-.183 1.326z"/>
+                </svg>
+              }
+            />
 
             {/* Right Columns Grid */}
             <div className="w-full md:w-3/4 flex flex-col">
               {/* Row 1 */}
               <div className="grid grid-cols-3 w-full border-b" style={{ borderColor: C.deepNavy }}>
-                <a 
+                <HoldButton 
                   href="https://www.instagram.com/elcaseritorestaurante/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="border-r flex items-center justify-center bg-[#081C46]/5 relative group overflow-hidden" 
+                  className="border-r flex items-center justify-center bg-[#081C46]/5 min-h-[80px]" 
                   style={{ borderColor: C.deepNavy }}
-                >
-                  {/* Instagram Gradient Fill Animation */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#833ab4]/85 via-[#fd1d1d]/85 to-[#fcb045]/85 backdrop-blur-md origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[800ms] ease-in-out z-0" />
-                  
-                  <div className="relative z-10 w-full h-full p-4 flex items-center justify-center">
-                    <span className="absolute font-sans font-bold text-[9px] md:text-[10px] lg:text-[11px] tracking-widest uppercase transition-all duration-[600ms] ease-in-out group-hover:opacity-0 group-hover:scale-90 group-hover:translate-y-2 opacity-100 translate-y-0 scale-100">
-                      Instagram
-                    </span>
-                    
-                    {/* Logo */}
-                    <div className="absolute transition-all duration-[600ms] ease-in-out opacity-0 scale-50 -translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 text-white drop-shadow-md delay-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </a>
+                  fillClassName="bg-gradient-to-r from-[#833ab4]/85 via-[#fd1d1d]/85 to-[#fcb045]/85 backdrop-blur-md"
+                  labelNode={<span className="font-sans font-bold text-[9px] md:text-[10px] lg:text-[11px] tracking-widest uppercase">Instagram</span>}
+                  logoNode={
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                  }
+                />
                 <a href="/nosotros" className="p-4 border-r flex items-center justify-center hover:bg-[#081C46]/5 transition-colors font-sans font-bold text-[9px] md:text-[10px] lg:text-[11px] tracking-widest uppercase" style={{ borderColor: C.deepNavy }}>
                   Nosotros
                 </a>
