@@ -61,9 +61,9 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
       onTouchStart={startHold}
       onTouchEnd={cancelHold}
       onTouchCancel={cancelHold}
-      onContextMenu={(e) => { e.preventDefault(); cancelHold(); }}
+      onContextMenu={(e) => { e.preventDefault(); }}
       className={`relative group overflow-hidden cursor-pointer ${className}`}
-      style={{ ...style, WebkitTouchCallout: 'none', userSelect: 'none', touchAction: 'none' }}
+      style={{ ...style, WebkitTouchCallout: 'none', WebkitUserSelect: 'none', userSelect: 'none', touchAction: 'none' }}
       data-interactive="true"
     >
       <div 
