@@ -150,12 +150,12 @@ export default function Footer() {
           mix-blend-mode: multiply; /* Efecto de tinta real sobre papel */
           font-family: var(--font-serif), serif;
           font-weight: 900;
-          font-size: 1.4rem;
+          font-size: 0.8rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          border: 2px solid #D4AF37;
+          border: 1.5px solid #D4AF37;
           border-radius: 4px;
-          padding: 0.4rem 1.8rem;
+          padding: 0.25rem 1rem;
           white-space: nowrap;
           z-index: 40;
         }
@@ -396,14 +396,13 @@ export default function Footer() {
       </div>
 
       {/* ─── STANDARD LEGAL BOTTOM BAR ─── */}
-      <div className="w-[95%] max-w-[1300px] flex flex-col sm:flex-row justify-start items-center sm:items-start py-4 mt-2 text-[#F7F2E8]/60 font-sans text-[10px] tracking-wider uppercase gap-4 pb-4 md:pb-4 text-center sm:text-left">
-        <div className="mb-2 sm:mb-0">
+      <div className="w-[95%] max-w-[1300px] flex flex-col sm:flex-row justify-between items-center py-4 mt-2 text-[#F7F2E8]/60 font-sans text-[8px] md:text-[10px] tracking-wider uppercase gap-2 pb-4 text-center">
+        <div className="mb-1 sm:mb-0">
           © {new Date().getFullYear()} El Caserito. Todos los derechos reservados.
         </div>
-        <div className="hidden sm:block opacity-50">|</div>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-center">
+        <div className="flex flex-row gap-3 items-center">
           <a href="#" className="hover:text-[#F7F2E8] transition-colors">Políticas de Privacidad</a>
-          <span className="hidden sm:inline opacity-50">|</span>
+          <span className="opacity-50">|</span>
           <a href="#" className="hover:text-[#F7F2E8] transition-colors">Términos y Condiciones</a>
         </div>
       </div>
