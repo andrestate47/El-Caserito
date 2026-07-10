@@ -51,18 +51,7 @@ export default function HeroExperience() {
     const container = containerRef.current;
     if (!container) return;
 
-    // Cache layout to prevent layout thrashing (huge performance killer)
-    let rect = container.getBoundingClientRect();
-    
-    // Throttle resize events
-    let resizeTimer: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        rect = container.getBoundingClientRect();
-      }, 200);
-    };
-    window.addEventListener("resize", handleResize, { passive: true });
+    // (Removed static rect caching to allow dynamic scroll calculation)
 
     // Initial setup for custom cursor
     const cursor = cursorRef.current;
@@ -74,6 +63,7 @@ export default function HeroExperience() {
     const onLeave = () => { if (cursor && window.innerWidth >= 768) gsap.to(cursor, { opacity: 0, duration: 0.2 }); };
 
     const handleMove = (e: MouseEvent | TouchEvent) => {
+      const rect = container.getBoundingClientRect();
       let clientX, clientY;
       if ('touches' in e) {
         if (e.touches.length === 0) return;
@@ -160,7 +150,6 @@ export default function HeroExperience() {
     window.addEventListener("touchmove", handleMove as EventListener, { passive: true });
 
     return () => {
-      window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMove as EventListener);
       window.removeEventListener("touchmove", handleMove as EventListener);
       if (cursor) gsap.killTweensOf(cursor);
