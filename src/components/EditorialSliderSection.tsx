@@ -56,9 +56,10 @@ const ParallaxCard = ({ img, title, rot, isSeal, yOffset }: any) => {
       className={`relative flex-shrink-0 w-[90vw] md:w-[70vw] lg:w-[60vw] h-[58vh] md:h-[68vh] rounded-xl p-4 md:p-6 group cursor-pointer shadow-xl ${yOffset || ""}`}
       style={{
         backgroundColor: C.navy,
-        transform: `rotate(${rot}deg)`,
         transformOrigin: "center center",
+        willChange: "transform"
       }}
+      initial={{ rotate: rot }}
       whileHover={{ scale: 1.02, rotate: rot > 0 ? rot + 1 : rot - 1 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
@@ -71,7 +72,8 @@ const ParallaxCard = ({ img, title, rot, isSeal, yOffset }: any) => {
           className="absolute inset-[-10%] w-[120%] h-[120%]"
           style={{ 
             backfaceVisibility: "hidden", 
-            WebkitFontSmoothing: "antialiased" 
+            WebkitFontSmoothing: "antialiased",
+            willChange: "transform"
           }}
         >
           <Image 
@@ -181,7 +183,7 @@ export default function EditorialSliderSection() {
           <div className="w-full relative flex items-center overflow-hidden">
             <motion.div 
               className="flex gap-8 md:gap-16 px-[10vw] items-center w-max"
-              style={{ x }}
+              style={{ x, willChange: "transform" }}
             >
               {cards.map((c) => (
                 <ParallaxCard key={c.id} {...c} />
