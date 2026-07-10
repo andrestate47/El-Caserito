@@ -6,13 +6,18 @@ import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { useTransition } from "@/context/TransitionContext";
 
-// Imágenes de prueba para el collage
+// Imágenes de prueba para el collage (Ahora 10 fotos con proporciones fotográficas correctas)
 const IMAGES = [
-  { id: 1, src: "/platos-caserito/Casuela de marisco.webp", className: "w-[50vw] h-[60vh] left-[5%] top-[10%]" },
-  { id: 2, src: "/platos-caserito/4arepas con queso.webp", className: "w-[40vw] h-[50vh] right-[10%] top-[5%]" },
-  { id: 3, src: "/platos-caserito/parrilla.webp", className: "w-[45vw] h-[55vh] left-[15%] bottom-[5%]" },
-  { id: 4, src: "/platos-caserito/cafe con leche.webp", className: "w-[35vw] h-[45vh] right-[5%] bottom-[10%]" },
-  { id: 5, src: "/platos-caserito/ensalada cesar.webp", className: "w-[60vw] h-[70vh] left-[20%] top-[15%]" },
+  { id: 1, src: "/platos-caserito/Casuela de marisco.webp", className: "w-[45vw] md:w-[25vw] aspect-[4/5] left-[2%] top-[5%]" },
+  { id: 2, src: "/platos-caserito/4arepas con queso.webp", className: "w-[40vw] md:w-[22vw] aspect-square right-[5%] top-[2%]" },
+  { id: 3, src: "/platos-caserito/parrilla.webp", className: "w-[50vw] md:w-[30vw] aspect-[4/3] left-[10%] bottom-[10%]" },
+  { id: 4, src: "/platos-caserito/cafe con leche.webp", className: "w-[35vw] md:w-[20vw] aspect-[3/4] right-[15%] bottom-[5%]" },
+  { id: 5, src: "/platos-caserito/ensalada cesar.webp", className: "w-[60vw] md:w-[35vw] aspect-video left-[20%] top-[35%]" },
+  { id: 6, src: "/platos-caserito/milanesa pure.webp", className: "w-[45vw] md:w-[28vw] aspect-square right-[20%] top-[30%]" },
+  { id: 7, src: "/platos-caserito/paella.webp", className: "w-[55vw] md:w-[32vw] aspect-[4/5] left-[35%] bottom-[20%]" },
+  { id: 8, src: "/platos-caserito/trio.webp", className: "w-[38vw] md:w-[24vw] aspect-[3/4] right-[30%] bottom-[25%]" },
+  { id: 9, src: "/platos-caserito/pasta al pesto.webp", className: "w-[42vw] md:w-[26vw] aspect-video left-[45%] top-[10%]" },
+  { id: 10, src: "/platos-caserito/chicharron aceitunas .webp", className: "w-[48vw] md:w-[28vw] aspect-[4/3] right-[40%] top-[15%]" },
 ];
 
 export default function PageTransition() {
@@ -48,15 +53,16 @@ export default function PageTransition() {
           pointerEvents: "auto",
         });
 
-        // Posiciones iniciales aleatorias para cada imagen según la petición
-        // 1: abajo, 2: izquierda, 3: derecha, 4: arriba, 5: centro zoom
-        const starts = [
-          { y: window.innerHeight, x: 0, scale: 1.15, opacity: 0 },
-          { y: 0, x: -window.innerWidth, scale: 1.15, opacity: 0 },
-          { y: 0, x: window.innerWidth, scale: 1.15, opacity: 0 },
-          { y: -window.innerHeight, x: 0, scale: 1.15, opacity: 0 },
-          { y: 0, x: 0, scale: 0.5, opacity: 0 },
-        ];
+        // Posiciones iniciales aleatorias para cada imagen desde los bordes de la pantalla
+        const starts = IMAGES.map(() => {
+          const edge = Math.floor(Math.random() * 4);
+          let x = 0, y = 0;
+          if (edge === 0) y = -window.innerHeight;
+          else if (edge === 1) y = window.innerHeight;
+          else if (edge === 2) x = -window.innerWidth;
+          else x = window.innerWidth;
+          return { x, y, scale: 1.15, opacity: 0 };
+        });
 
         gsap.set(".transition-bg", { opacity: 0 });
         gsap.to(".transition-bg", { opacity: 0.9, duration: 0.8, ease: "power2.out" });
