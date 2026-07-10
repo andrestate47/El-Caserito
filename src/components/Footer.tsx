@@ -40,7 +40,9 @@ const HoldButton: React.FC<HoldButtonProps> = ({ href, className, style, fillCla
     timerRef.current = setTimeout(() => {
       setState('success');
       setTimeout(() => {
-        window.open(href, '_blank');
+        // En móviles, window.open dentro de un setTimeout es bloqueado silenciosamente 
+        // por el bloqueador de popups. Usar location.href garantiza la redirección a la app.
+        window.location.href = href;
         setState('idle');
       }, 1000);
     }, 2000);
