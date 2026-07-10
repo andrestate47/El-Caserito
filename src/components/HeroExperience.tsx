@@ -73,21 +73,30 @@ export default function HeroExperience() {
     const onEnter = () => { if (cursor && window.innerWidth >= 768) gsap.to(cursor, { opacity: 1, duration: 0.2 }); };
     const onLeave = () => { if (cursor && window.innerWidth >= 768) gsap.to(cursor, { opacity: 0, duration: 0.2 }); };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (window.innerWidth < 768) return;
-
+    const handleMove = (e: MouseEvent | TouchEvent) => {
       const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      
+      let clientX, clientY;
+      if ('touches' in e) {
+        if (e.touches.length === 0) return;
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = (e as MouseEvent).clientX;
+        clientY = (e as MouseEvent).clientY;
+      }
 
-      // Si el mouse está fuera del contenedor, no hacemos nada (simulamos mouseleave)
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      // Si el touch o mouse está fuera del contenedor, no hacemos nada
       if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
-        if (cursor) gsap.to(cursor, { opacity: 0, duration: 0.2, overwrite: "auto" });
+        if (cursor && !('touches' in e)) gsap.to(cursor, { opacity: 0, duration: 0.2, overwrite: "auto" });
         return;
       }
 
-      // 1. Update Custom Cursor Instantly
-      if (cursor) {
+      // 1. Update Custom Cursor Instantly (only desktop)
+      if (cursor && !('touches' in e)) {
         gsap.set(cursor, { x, y, opacity: 1, overwrite: "auto" });
       }
 
@@ -95,9 +104,12 @@ export default function HeroExperience() {
       const dx = x - lastPos.current.x;
       const dy = y - lastPos.current.y;
       const distance = Math.hypot(dx, dy);
+      
+      const isMobile = window.innerWidth < 768;
+      const threshold = isMobile ? 120 : 250;
 
-      // Only spawn a new image if cursor moved at least 250px
-      if (distance > 250) {
+      // Only spawn a new image if cursor moved at least threshold
+      if (distance > threshold) {
         lastPos.current = { x, y };
 
         const index = currentIndex.current;
@@ -112,12 +124,15 @@ export default function HeroExperience() {
           const offsetY = Math.sin(offsetAngle) * offsetDist;
           const rotation = Math.random() * 16 - 8;
 
+          const centerX = isMobile ? 100 : 175;
+          const centerY = isMobile ? 150 : 262;
+
           gsap.killTweensOf(imgEl);
           gsap.set(imgEl, { clearProps: "all" });
 
           gsap.fromTo(
             imgEl,
-            { x: x + offsetX - 175, y: y + offsetY - 262, opacity: 0, scale: 0.9, rotate: rotation, zIndex: globalZIndex.current },
+            { x: x + offsetX - centerX, y: y + offsetY - centerY, opacity: 0, scale: 0.9, rotate: rotation, zIndex: globalZIndex.current },
             {
               opacity: 0.9,
               scale: 1,
@@ -142,12 +157,14 @@ export default function HeroExperience() {
       }
     };
 
-    // Usamos window para atrapar el mouse incluso si hay un overlay de transición temporalmente encima
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    // Usamos window para atrapar el mouse/touch incluso si hay un overlay de transición temporalmente encima
+    window.addEventListener("mousemove", handleMove as EventListener, { passive: true });
+    window.addEventListener("touchmove", handleMove as EventListener, { passive: true });
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mousemove", handleMove as EventListener);
+      window.removeEventListener("touchmove", handleMove as EventListener);
       if (cursor) gsap.killTweensOf(cursor);
       imageRefs.current.forEach((el) => {
         if (el) gsap.killTweensOf(el);
@@ -219,15 +236,15 @@ export default function HeroExperience() {
         )}
       </div>
 
-      {/* Desktop Image Trail Elements (Hidden on mobile via CSS) */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none z-10">
+      {/* Image Trail Elements (Visible on all devices, scaled down on mobile) */}
+      <div className="absolute inset-0 pointer-events-none z-10">
         {images.map((src, index) => (
           <div
             key={index}
             ref={(el) => {
               imageRefs.current[index] = el;
             }}
-            className="absolute w-[350px] h-[525px] opacity-0 rounded-2xl overflow-hidden border border-brand-cream/15 shadow-2xl bg-brand-black"
+            className="absolute w-[200px] h-[300px] md:w-[350px] md:h-[525px] opacity-0 rounded-2xl overflow-hidden border border-brand-cream/15 shadow-2xl bg-brand-black"
             style={{ willChange: "transform, opacity" }}
           >
             <img
@@ -238,26 +255,6 @@ export default function HeroExperience() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </div>
         ))}
-      </div>
-
-      {/* Mobile Floating Collage Fallback (Hidden on desktop via CSS) */}
-      <div className="block md:hidden absolute inset-0 z-10 opacity-75 pointer-events-none">
-        {/* Top Left */}
-        <div className="absolute top-[14%] left-[4%] w-[130px] h-[90px] rounded-2xl overflow-hidden border border-brand-cream/10 rotate-[-12deg] shadow-lg animate-float-slow">
-          <img src="/platos-caserito/4arepas con queso.webp" alt="Arepa" className="w-full h-full object-cover" />
-        </div>
-        {/* Top Right */}
-        <div className="absolute top-[10%] right-[4%] w-[140px] h-[95px] rounded-2xl overflow-hidden border border-brand-cream/10 rotate-[10deg] shadow-lg animate-float-medium">
-          <img src="/platos-caserito/cafe con leche.webp" alt="Café" className="w-full h-full object-cover" />
-        </div>
-        {/* Bottom Left */}
-        <div className="absolute bottom-[14%] left-[4%] w-[140px] h-[95px] rounded-2xl overflow-hidden border border-brand-cream/10 rotate-[8deg] shadow-lg animate-float-fast">
-          <img src="/platos-caserito/parrilla.webp" alt="Carne" className="w-full h-full object-cover" />
-        </div>
-        {/* Bottom Right */}
-        <div className="absolute bottom-[16%] right-[4%] w-[130px] h-[90px] rounded-2xl overflow-hidden border border-brand-cream/10 rotate-[-8deg] shadow-lg animate-float-slow">
-          <img src="/platos-caserito/ensalada cesar.webp" alt="Ensalada" className="w-full h-full object-cover" />
-        </div>
       </div>
 
       {/* ── Editorial Marquee Strip ─────────────────────────────────── */}
