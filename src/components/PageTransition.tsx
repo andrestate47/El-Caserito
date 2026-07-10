@@ -67,7 +67,7 @@ export default function PageTransition() {
         });
 
         gsap.set(".transition-bg", { opacity: 0 });
-        gsap.to(".transition-bg", { opacity: 0.9, duration: 0.8, ease: "power2.out" });
+        gsap.to(".transition-bg", { opacity: 0.9, duration: 0.4, ease: "power2.out" });
 
         gsap.set(".collage-photo", {
           x: (i) => starts[i].x,
@@ -82,8 +82,8 @@ export default function PageTransition() {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.4,
+          stagger: 0.07,
           ease: "power4.inOut",
           onComplete: () => {
             // Cuando termina la animación de entrada, navegamos
@@ -101,13 +101,13 @@ export default function PageTransition() {
   useEffect(() => {
     if (playOutAnimation) {
       gsapCtx.current?.add(() => {
-        gsap.to(".transition-bg", { opacity: 0, duration: 0.8, ease: "power3.inOut" });
+        gsap.to(".transition-bg", { opacity: 0, duration: 0.4, ease: "power3.inOut" });
         gsap.to(".collage-photo", {
           y: -window.innerHeight * 0.5,
           opacity: 0,
           scale: 0.95,
-          duration: 0.8,
-          stagger: 0.1,
+          duration: 0.4,
+          stagger: 0.05,
           ease: "power3.inOut",
           onComplete: () => {
             // Ocultar contenedor y liberar scroll
