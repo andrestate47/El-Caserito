@@ -296,7 +296,7 @@ export default function Footer() {
             {/* Left Column: Contáctanos (WhatsApp) */}
             <HoldButton 
               href="https://wa.me/584247222220"
-              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center bg-[#081C46]/5 min-h-[120px]"
+              className="w-full md:w-1/4 border-b md:border-b-0 md:border-r flex items-center justify-center bg-[#081C46]/5 min-h-[80px]"
               style={{ borderColor: C.deepNavy }}
               fillClassName="bg-[#25D366]/85 backdrop-blur-md"
               labelNode={<h4 className="font-serif font-black italic text-xl md:text-2xl text-center leading-tight uppercase">WHATSAPP</h4>}
