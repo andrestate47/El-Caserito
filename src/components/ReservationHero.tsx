@@ -9,6 +9,8 @@ export default function ReservationHero() {
           src="/videocaserito.mp4"
           autoPlay
           muted
+          defaultMuted
+          loop
           playsInline
           className="w-full h-full object-cover object-center"
         />
