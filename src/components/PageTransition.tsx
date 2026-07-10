@@ -8,16 +8,18 @@ import { useTransition } from "@/context/TransitionContext";
 
 // Imágenes de prueba para el collage (Ahora 10 fotos con proporciones fotográficas correctas)
 const IMAGES = [
-  { id: 1, src: "/platos-caserito/Casuela de marisco.webp", className: "w-[45vw] md:w-[25vw] aspect-[4/5] left-[2%] top-[5%]" },
-  { id: 2, src: "/platos-caserito/4arepas con queso.webp", className: "w-[40vw] md:w-[22vw] aspect-square right-[5%] top-[2%]" },
-  { id: 3, src: "/platos-caserito/parrilla.webp", className: "w-[50vw] md:w-[30vw] aspect-[4/3] left-[10%] bottom-[10%]" },
-  { id: 4, src: "/platos-caserito/cafe con leche.webp", className: "w-[35vw] md:w-[20vw] aspect-[3/4] right-[15%] bottom-[5%]" },
-  { id: 5, src: "/platos-caserito/ensalada cesar.webp", className: "w-[60vw] md:w-[35vw] aspect-video left-[20%] top-[35%]" },
-  { id: 6, src: "/platos-caserito/milanesa pure.webp", className: "w-[45vw] md:w-[28vw] aspect-square right-[20%] top-[30%]" },
-  { id: 7, src: "/platos-caserito/paella.webp", className: "w-[55vw] md:w-[32vw] aspect-[4/5] left-[35%] bottom-[20%]" },
-  { id: 8, src: "/platos-caserito/trio.webp", className: "w-[38vw] md:w-[24vw] aspect-[3/4] right-[30%] bottom-[25%]" },
-  { id: 9, src: "/platos-caserito/pasta al pesto.webp", className: "w-[42vw] md:w-[26vw] aspect-video left-[45%] top-[10%]" },
-  { id: 10, src: "/platos-caserito/chicharron aceitunas .webp", className: "w-[48vw] md:w-[28vw] aspect-[4/3] right-[40%] top-[15%]" },
+  { id: 1, src: "/platos-caserito/Casuela de marisco.webp", className: "w-[70vw] md:w-[35vw] aspect-[4/5] left-[-10%] top-[-5%]" },
+  { id: 2, src: "/platos-caserito/4arepas con queso.webp", className: "w-[75vw] md:w-[40vw] aspect-square right-[-10%] top-[-5%]" },
+  { id: 3, src: "/platos-caserito/parrilla.webp", className: "w-[85vw] md:w-[45vw] aspect-[4/3] left-[-5%] bottom-[-5%]" },
+  { id: 4, src: "/platos-caserito/cafe con leche.webp", className: "w-[65vw] md:w-[35vw] aspect-[3/4] right-[-5%] bottom-[-5%]" },
+  { id: 5, src: "/platos-caserito/ensalada cesar.webp", className: "w-[90vw] md:w-[50vw] aspect-video left-[5%] top-[25%]" },
+  { id: 6, src: "/platos-caserito/milanesa pure.webp", className: "w-[80vw] md:w-[45vw] aspect-square right-[5%] top-[20%]" },
+  { id: 7, src: "/platos-caserito/paella.webp", className: "w-[85vw] md:w-[45vw] aspect-[4/5] left-[20%] bottom-[15%]" },
+  { id: 8, src: "/platos-caserito/trio.webp", className: "w-[75vw] md:w-[40vw] aspect-[3/4] right-[25%] bottom-[10%]" },
+  { id: 9, src: "/platos-caserito/pasta al pesto.webp", className: "w-[80vw] md:w-[40vw] aspect-video left-[35%] top-[5%]" },
+  { id: 10, src: "/platos-caserito/chicharron aceitunas .webp", className: "w-[85vw] md:w-[45vw] aspect-[4/3] right-[10%] top-[10%]" },
+  { id: 11, src: "/platos-caserito/interior1.jpg", className: "w-[100vw] md:w-[55vw] aspect-video left-[10%] top-[45%]" },
+  { id: 12, src: "/platos-caserito/coctel_mojito_premium.png", className: "w-[70vw] md:w-[35vw] aspect-[3/4] right-[30%] top-[40%]" },
 ];
 
 export default function PageTransition() {
