@@ -248,6 +248,7 @@ export default function EnvelopeIntro() {
 
   const skipIntro = () => {
     if (isAnimating.current) return;
+    window.dispatchEvent(new Event("envelopeOpening"));
     gsap.to(containerRef.current, {
       opacity: 0,
       duration: 0.8,
