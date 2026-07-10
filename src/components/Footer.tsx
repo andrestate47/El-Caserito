@@ -396,14 +396,15 @@ export default function Footer() {
       </div>
 
       {/* ─── STANDARD LEGAL BOTTOM BAR ─── */}
-      <div className="w-[95%] max-w-[1300px] flex flex-col sm:flex-row justify-between items-center py-4 mt-2 text-[#F7F2E8]/60 font-sans text-[8px] md:text-[10px] tracking-wider uppercase gap-2 pb-4 text-center">
-        <div className="mb-1 sm:mb-0">
-          © {new Date().getFullYear()} El Caserito. Todos los derechos reservados.
+      <div className="w-[95%] max-w-[1300px] flex flex-row justify-center items-center py-3 mt-1 text-[#F7F2E8]/60 font-sans text-[6px] xs:text-[7px] sm:text-[9px] md:text-[10px] tracking-wider uppercase gap-1 sm:gap-2 pb-3 text-center">
+        <div className="whitespace-nowrap">
+          © {new Date().getFullYear()} El Caserito.
         </div>
-        <div className="flex flex-row gap-3 items-center">
-          <a href="#" className="hover:text-[#F7F2E8] transition-colors">Políticas de Privacidad</a>
+        <span className="opacity-50 mx-1">|</span>
+        <div className="flex flex-row gap-1 sm:gap-2 items-center whitespace-nowrap">
+          <a href="#" className="hover:text-[#F7F2E8] transition-colors">Privacidad</a>
           <span className="opacity-50">|</span>
-          <a href="#" className="hover:text-[#F7F2E8] transition-colors">Términos y Condiciones</a>
+          <a href="#" className="hover:text-[#F7F2E8] transition-colors">Términos</a>
         </div>
       </div>
     </footer>
