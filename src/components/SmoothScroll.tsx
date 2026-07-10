@@ -15,8 +15,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     <ReactLenis
       root
       options={{
-        lerp: 0.08, // Ultra-smooth fluidity
+        lerp: 0.1, // Balance between smooth and responsive
         smoothWheel: true,
+        wheelMultiplier: 1.2,
         syncTouch: false,
       }}
     >

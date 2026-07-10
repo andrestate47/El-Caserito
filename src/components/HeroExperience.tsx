@@ -173,7 +173,7 @@ export default function HeroExperience() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100svh] min-h-[600px] bg-[#0A183C] text-[#FDFBD4] overflow-hidden flex flex-col justify-center items-center select-none"
+      className="relative w-full h-[100svh] min-h-[600px] bg-[#0A183C] text-[#FDFBD4] overflow-hidden flex flex-col justify-center items-center select-none [&_*]:cursor-none"
       style={{ cursor: "none" }} // hide native cursor on desktop (CSS handles mobile)
     >
       {/* ── Custom Coffee Cup Cursor (desktop only) ── */}
