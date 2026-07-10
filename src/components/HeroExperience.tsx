@@ -74,8 +74,6 @@ export default function HeroExperience() {
     const onLeave = () => { if (cursor && window.innerWidth >= 768) gsap.to(cursor, { opacity: 0, duration: 0.2 }); };
 
     const handleMove = (e: MouseEvent | TouchEvent) => {
-      const rect = container.getBoundingClientRect();
-      
       let clientX, clientY;
       if ('touches' in e) {
         if (e.touches.length === 0) return;
