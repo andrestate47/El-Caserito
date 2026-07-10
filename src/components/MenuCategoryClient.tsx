@@ -53,7 +53,7 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
                   key={j} 
                   className="flex flex-col group cursor-pointer relative"
                   onMouseEnter={() => {
-                    if (item.image) setHoveredItem({ image: item.image, name: item.name });
+                    if (item.image) setHoveredItem({ image: item.image as string, name: item.name });
                   }}
                   onMouseLeave={() => {
                     setHoveredItem(null);
@@ -61,7 +61,7 @@ export default function MenuCategoryClient({ subcategories }: MenuCategoryClient
                   onClick={() => {
                     // En móviles (o si no hay hover real), al tocar alterna la foto
                     if (item.image) {
-                      setHoveredItem(prev => prev?.name === item.name ? null : { image: item.image, name: item.name });
+                      setHoveredItem(prev => prev?.name === item.name ? null : { image: item.image as string, name: item.name });
                     }
                   }}
                 >
